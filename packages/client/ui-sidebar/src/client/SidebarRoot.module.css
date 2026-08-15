@@ -250,7 +250,8 @@
 }
 
 .settingsArea,
-.footerActions {
+.footerActions,
+.footerStatus {
   flex: none;
   min-width: 0;
   width: 100%;
@@ -260,12 +261,17 @@
   display: flex;
 }
 
+.footerStatus {
+  margin-bottom: 4px;
+}
+
 .collapsed .footArea {
   align-items: center;
 }
 
 .collapsed .settingsArea,
-.collapsed .footerActions {
+.collapsed .footerActions,
+.collapsed .footerStatus {
   display: flex;
   justify-content: center;
   width: auto;

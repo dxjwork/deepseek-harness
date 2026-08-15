@@ -83,7 +83,11 @@ export class FakeApiClient implements IApiClient {
     () => Promise.resolve(ok({ path: null }))
   onOpenPath: (payload: unknown) => Promise<RpcResponse<{ opened: true }>> =
     () => Promise.resolve(ok({ opened: true as const }))
-
+  onGetBalance: (payload: unknown) => Promise<RpcResponse<{
+    available: boolean
+    balanceInfos: { currency: string; totalBalance: string; grantedBalance: string; toppedUpBalance: string }[]
+  }>> =
+    () => Promise.resolve(ok({ available: false, balanceInfos: [] }))
   onListDirectory: (payload: unknown) => Promise<RpcResponse<{
     path: string
     home: string
@@ -146,6 +150,7 @@ export class FakeApiClient implements IApiClient {
     listDirectory: payload => this.record('host.listDirectory', payload, this.onListDirectory(payload)),
     createDirectory: payload => this.record('host.createDirectory', payload, this.onCreateDirectory(payload)),
     openPath: payload => this.record('host.openPath', payload, this.onOpenPath(payload)),
+    getBalance: payload => this.record('host.getBalance', payload, this.onGetBalance(payload)),
   }
 
   readonly workspace: IApiClient['workspace'] = {

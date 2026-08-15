@@ -5,6 +5,18 @@
 
 import type { RpcRequest, RpcResponse } from './rpc.ts'
 
+/** One currency row of the DeepSeek account-balance endpoint (mirrors the billing service's shape). */
+export interface BalanceInfo {
+  /** ISO currency code (e.g. `CNY`). */
+  currency: string
+  /** Total available balance as the provider's decimal string. */
+  totalBalance: string
+  /** Granted (promotional) balance as the provider's decimal string. */
+  grantedBalance: string
+  /** Topped-up balance as the provider's decimal string. */
+  toppedUpBalance: string
+}
+
 /** One directory row of a listing: a child entry or a breadcrumb ancestor. */
 export interface DirectoryEntry {
   /** Base name shown in a browser row (a root crumb carries its full path). */
@@ -93,4 +105,14 @@ export interface HostApi {
     request: RpcRequest<{ path: string }>,
     signal: AbortSignal,
   ): Promise<RpcResponse<{ opened: true }>>
+
+  /**
+   * Current DeepSeek account balance for the sidebar billing status. Returns
+   * `available: false` with an empty list when the key is missing or the
+   * endpoint does not answer — the client renders a placeholder rather than
+   * an error.
+   */
+  getBalance(
+    request: RpcRequest<{}>,
+  ): Promise<RpcResponse<{ available: boolean; balanceInfos: BalanceInfo[] }>>
 }

@@ -93,6 +93,9 @@
       "path": "../directory-picker"
     },
     {
+      "path": "../billing"
+    },
+    {
       "path": "../../extensions/cordis-host-runner"
     },
     {

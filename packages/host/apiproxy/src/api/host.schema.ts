@@ -3,7 +3,7 @@
  */
 
 import { z } from 'zod'
-import type { DirectoryEntry } from './host.ts'
+import type { BalanceInfo, DirectoryEntry } from './host.ts'
 import type { RequestPayload, ResponseValue } from './rpc-map.ts'
 import type { Wire } from './rpc.schema.ts'
 
@@ -72,3 +72,20 @@ export const hostOpenPathRequestSchema = z.object({
 export const hostOpenPathValueSchema = z.object({
   opened: z.literal(true),
 }) satisfies z.ZodType<Wire<ResponseValue<'host.openPath'>>>
+
+/** One balance row on the wire (mirrors the billing service's BalanceInfo). */
+export const balanceInfoSchema = z.object({
+  currency: z.string(),
+  totalBalance: z.string(),
+  grantedBalance: z.string(),
+  toppedUpBalance: z.string(),
+}) satisfies z.ZodType<Wire<BalanceInfo>>
+
+/** host.getBalance request payload (empty object literal). */
+export const hostGetBalanceRequestSchema = z.object({}) satisfies z.ZodType<Wire<RequestPayload<'host.getBalance'>>>
+
+/** host.getBalance response value; `available: false` means the balance is not resolvable. */
+export const hostGetBalanceValueSchema = z.object({
+  available: z.boolean(),
+  balanceInfos: z.array(balanceInfoSchema),
+}) satisfies z.ZodType<Wire<ResponseValue<'host.getBalance'>>>

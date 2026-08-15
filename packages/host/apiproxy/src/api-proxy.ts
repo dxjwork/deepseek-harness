@@ -64,6 +64,8 @@ import type {} from '@deepseek-ai/dsh-jobs'
 import type { JobSnapshot } from '@deepseek-ai/dsh-jobs'
 // Type-only: resolves `ctx.get('sessionProjectionCache')` (the cold listing column).
 import type {} from '@deepseek-ai/dsh-session-projection-cache'
+// Type-only: resolves `ctx.get('billing')` (the account-balance service).
+import type {} from '@deepseek-ai/dsh-billing'
 // GoalError narrows domain rejections to their stable codes at the wire boundary.
 import { GoalError } from '@deepseek-ai/dsh-goal'
 import type { GoalRef as CoreGoalRef } from '@deepseek-ai/dsh-goal'
@@ -3007,6 +3009,14 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
 
       async openPath(request, signal) {
         return openPath(request, request.payload.path, signal)
+      },
+
+      async getBalance(request) {
+        const billing = ctx.get('billing')
+        if (billing === undefined) return ok(request, { available: false, balanceInfos: [] })
+        const rows = await billing.getBalance()
+        if (rows === undefined) return ok(request, { available: false, balanceInfos: [] })
+        return ok(request, { available: true, balanceInfos: rows })
       },
     },
 

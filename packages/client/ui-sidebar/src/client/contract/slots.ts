@@ -33,6 +33,12 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
      * package's 'sidebar' entry; each action receives only the column state.
      */
     'sidebar.footer.action': { kind: 'list'; scope: 'root'; owner: SidebarFooterActionOwnerProps }
+    /**
+     * Persistent status card above Settings (billing: balance and token
+     * usage). Declared by this package's 'sidebar' entry; the occupant owns
+     * its data and only receives the column state.
+     */
+    'sidebar.footer.status': { kind: 'single'; scope: 'root'; owner: SidebarFooterStatusOwnerProps }
   }
 }
 
@@ -62,6 +68,12 @@ export interface SidebarFooterActionOwnerProps {
   wide: boolean
 }
 
+/** Owner share of the status card above Settings at the sidebar foot. */
+export interface SidebarFooterStatusOwnerProps {
+  /** Whether the sidebar renders wide content (false = 56px rail). */
+  wide: boolean
+}
+
 /**
  * Registrant-private injected share (arrives via the register inject
  * factory). The shell keeps only its own controls: starting a Session from
@@ -85,5 +97,5 @@ export type SidebarRootInjected = {
  */
 export type SidebarRootComponentProps =
   PropsRuntime<'sidebar'>
-  & PropsRenderSlots<'sidebar.workspaces' | 'sidebar.settings' | 'sidebar.footer.action'>
+  & PropsRenderSlots<'sidebar.workspaces' | 'sidebar.settings' | 'sidebar.footer.action' | 'sidebar.footer.status'>
   & SidebarRootInjected & PropsLocale<'sidebar'>

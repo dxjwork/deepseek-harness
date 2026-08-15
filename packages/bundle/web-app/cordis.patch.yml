@@ -94,6 +94,11 @@
     - id: plugin-inventory
       name: '@deepseek-ai/dsh-host-plugin-inventory'
 
+    # DeepSeek account balance, served to the sidebar billing status through
+    # host.getBalance. Optional to the API proxy (absent → `available: false`).
+    - id: billing
+      name: '@deepseek-ai/dsh-billing'
+
     # The API gateway: the transport-agnostic dispatch face every client shape
     # shares. The base layer's agent-default-model service owns the default model.
     - id: api-gateway
@@ -182,6 +187,10 @@
 
     - id: ui-sidebar
       name: '@deepseek-ai/dsh-client-ui-sidebar'
+
+    # Sidebar billing status: DeepSeek balance + current/cumulative token usage.
+    - id: ui-billing
+      name: '@deepseek-ai/dsh-client-ui-billing'
 
     - id: ui-settings
       name: '@deepseek-ai/dsh-client-ui-settings'
